@@ -22,7 +22,9 @@
 </head>
     <body class="login-body">
         <div class="container">
-          <form class="form-signin">
+
+          <form method="post" class="form-signin">
+              {% csrf_token %}
             <h2 class="form-signin-heading">登录</h2>
             <div class="login-wrap">
                 <input type="text" name="username" class="form-control" placeholder="用户名" maxlength="150" required="" id="id_username">

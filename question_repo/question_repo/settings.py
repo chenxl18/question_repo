@@ -89,6 +89,10 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
+# 自定义用户model： "应用名.Model名
+AUTH_USER_MODEL = 'accounts.User'
+# 注意：如果扩展了User一定需要指定AUTH_USER_MODEL
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -234,3 +238,21 @@ LOGGING = {
         },
     }
 }
+
+CACHES = {
+    'default': {
+        # BACKEND配置缓存后端为RedisCache
+        'BACKEND': 'django_redis.cache.RedisCache',
+        # LOCATION配置redis服务器地址
+        'LOCATION': 'redis://192.168.0.156:6379',
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+             "PASSWORD": "rootroot",
+        },
+    },
+}
+
+# # 以下配置可参考，在settings自定义配置项，方便统一管理
+# REDIS_TIMEOUT=7*24*60*60
+# CUBES_REDIS_TIMEOUT=60*60
+# NEVER_REDIS_TIMEOUT=365*24*60*60
