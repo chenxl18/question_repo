@@ -22,7 +22,7 @@ class RegisterForm(forms.ModelForm):
         }
 
     # username是否重复django会自动检查，因为它是unique的，所以不需要自己写clean_username
-
+    # 检查手机号码是否存在
     def clean_mobile(self):
         ret = User.objects.filter(mobile=self.cleaned_data.get("mobile"))
         if not ret:
@@ -30,6 +30,7 @@ class RegisterForm(forms.ModelForm):
         else:
             raise ValidationError("手机号已绑定")
 
+    # 检查密码不能全是数字
     def clean_password(self):
         data = self.cleaned_data.get("password")
         if not data.isdigit():
@@ -42,9 +43,10 @@ class RegisterForm(forms.ModelForm):
             return self.cleaned_data
         else:
             raise ValidationError("两次密码不一致")
+
+
 # 因为是登录功能，所以不适合ModelForm。
 # ModelForm对于unique字段会检查是否已经存在，如果存在，is_valid结果会为False
-
 class LoginForm(forms.Form):
     username = forms.CharField(label="用户名", max_length="24",
                                widget=widgets.TextInput(attrs={"class": "form-control", "placeholder": "用户名"}))
@@ -58,6 +60,7 @@ class LoginForm(forms.Form):
         print('check password')
         username = self.cleaned_data['username']
         password = self.cleaned_data['password']
+
         try:
             user = User.objects.get(username=username)
             return user, auth_check_password(password, user.password)

@@ -1,0 +1,43 @@
+{#{% for question in question %}#}
+{#    {{ question.full_name|upper }}<br>#}
+{##}
+{#{% endfor %}#}
+{##}
+{#<div class="pagination">#}
+{#    <span class="step-links">#}
+{#        {% if question.has_previous %}#}
+{#            <a href="?page=1">&laquo;first</a>#}
+{#            <a href="?page={{ question.previous_page_number }}">previous</a>#}
+{#        {% endif %}#}
+{#        <span class="current">#}
+{#            Page {{ question.number }} of {{ question.paginator.num_pages }}.#}
+{#        </span>#}
+{#        {% if question.has_next %}#}
+{#            <a href="?page={{ question.next_page_number }}">next</a>#}
+{#            <a href="?page={{ question.paginator.num_pages }}">lase &raquo;</a>#}
+{#        {% endif %}#}
+{#    </span>#}
+{#</div>#}
+
+
+{% for question in qs %}
+
+    <h4>{{ question.id |upper }}-{{ question.title }}-{{ question.answer }}</h4><br />
+
+{% endfor %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if qs.has_previous %}
+            <a href="?page={{ qs.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ qs.number }} of {{ qs.paginator.num_pages }}.
+        </span>
+
+        {% if qs.has_next %}
+            <a href="?page={{ qs.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>

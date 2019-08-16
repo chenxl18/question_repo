@@ -6,9 +6,11 @@ urlpatterns = [
     # 首页
     url(r'^$',views.index, name="index"),
     # 题目列表
-    url(r'^questions/$',views.questions, name="questions"),
+    url(r'^questions/$',views.QuestionsList.as_view(), name="questions"),
     # 贡献题目
-    url(r'^question/$',views.test, name="question"),
+    url(r'^question/$',views.Question.as_view(), name="question"),
     # 题目详情，捕获一个参数
-    url(r'^questions/id/$',views.question_detail, name="question_detail"),
+    url(r'^question/(?P<pk>\d+)/$', views.QuestionDetail.as_view(), name="question_detail"),
+    # 分页
+    url(r'^paginator/$',views.listing,name='paginator'),
 ]

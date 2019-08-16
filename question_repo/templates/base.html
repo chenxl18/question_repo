@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load thumbnail %}
 <!DOCTYPE html>
 <html style="overflow: hidden;" lang="en">
 <head>
@@ -8,10 +9,10 @@
     <meta name="description" content="">
     <meta name="author" content="Mosaddek">
     <meta name="keyword" content="FlatLab, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
-    <link rel="shortcut icon" href="http://127.0.0.1:8000/img/favicon.html">
+    <link rel="shortcut icon" href="#">
     <title>{% block title %}BASE{% endblock %}-题库系统</title>
     <!-- Bootstrap core CSS -->
-<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <!--external css-->
     <link href="{% static 'assets/font-awesome/css/font-awesome.css' %}" rel="stylesheet" />
     <!-- Custom styles for this template -->
@@ -44,30 +45,29 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <ul class="nav navbar-nav">
                     <li class="active">
-                        <a class="" href="http://127.0.0.1:8000/">
+                        <a class="" href="{% url 'repo:index' %}">
                             <span> 首页 </span>
                         </a>
                     </li>
                     <li class="">
-                        <a class="" href="http://127.0.0.1:8000/question/">
+                        <a class="" href="{% url 'repo:questions' %}">
                             <span> 校招题 </span>
                         </a>
                     </li>
                 </ul>
                 <ul class="nav pull-right top-menu">
                     <li>
-                        <form action="/question/">
-                            <input type="text" class="form-control search" placeholder="Search" name="search"
-                                   id="search">
+                        <form action="{% url 'repo:questions' %}">
+                            <input type="text" class="form-control search" placeholder="Search" name="search" id="search" value="{{ search_key }}">
                         </form>
                     </li>
                     <!-- user login dropdown start-->
 
                     <li class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <img alt="" src="{% static 'img/1534323246.png' %}" height="30px">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="{% url 'uc:profile' %}">
+                            <img alt="" src="{{ user.avator_sor|thumbnail_url:'avator' }}" height="30px">
 
-                            <span class="username">admin</span>
+                            <span class="username">{{ user }}</span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
@@ -92,7 +92,9 @@
             <section class="wrapper">
                 <!-- page start-->
                 <div class="row">
-                    {% block content %}这是BASE页面
+
+                    {% block content %}
+                        这是BASE页面
                     {% endblock %}
                 </div>
                 <!-- page end-->
@@ -101,7 +103,7 @@
         <!--main content end-->
     </section>
 </div>
-{% include "crontribute_model.html" %}
+{% include "contribute_model.html" %}
 <!-- js placed at the end of the document so the pages load faster -->
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
@@ -110,9 +112,9 @@
 <!--common script for all pages-->
 <script src="{% static 'js/common-scripts.js' %}"></script>
 <script src="{% static 'js/owl.carousel.js' %}"></script>
-<script>
     {% block load_js %}
     {% endblock %}
+<script>
     //owl carousel
     $(document).ready(function () {
         $("#owl-demo").owlCarousel({

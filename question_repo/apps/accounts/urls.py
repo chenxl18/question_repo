@@ -28,8 +28,8 @@ urlpatterns = [
     # 退出
     url(r'logout/$', views.logout, name="logout"),
     # 忘记密码
-    url(r'password/forget/$', views.test, name="password_forget"),
+    url(r'password/forget/$', views.PasswordForget.as_view(), name="password_forget"),
     # 重置密码
-    url(r'password/reset/token$', views.test, name="password_reset"),
+    url(r'password/reset/(\w+)/$', views.PasswordReset.as_view(), name="password_reset"),
 
 ]

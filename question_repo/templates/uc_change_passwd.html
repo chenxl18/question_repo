@@ -1,0 +1,67 @@
+{% extends 'uc_base.html' %}
+{% block uc_content %}
+  <div class="col-lg-12">
+      <div class="panel">
+          <div class="panel-body">
+              <h4>修改密码</h4>
+              <hr/>
+              <div class="row col-md-7">
+                    <form class="form-horizontal" role="form" method="post">
+                         {% csrf_token %}
+                          <div class="form-group">
+                              <label for="inputPasswordOld" class="col-lg-3 control-label">旧密码</label>
+                              <div class="col-lg-9">
+                                  <input name="oldpassword" type="password" class="form-control" id="inputPasswordOld" placeholder="旧密码"  minlength="6" required>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label for="inputPasswordNew1" class="col-lg-3 control-label">新密码</label>
+                              <div class="col-lg-9">
+                                  <input name="newpassword1" type="password" class="form-control" id="inputPasswordNew1" placeholder="新密码"  minlength="6" required>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label for="inputPasswordNew1" class="col-lg-3 control-label">新密码</label>
+                              <div class="col-lg-9">
+                                  <input name="newpassword2" type="password" class="form-control" id="inputPasswordNew2" placeholder="请再输入一次新密码" minlength="6" required>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <div class="col-lg-offset-3 col-lg-9">
+                                  <button type="submit" class="btn btn-danger" data-events="operateEvents">提交</button>
+                              </div>
+                          </div>
+                     </form>
+                  {{ ret_info }}
+              </div>
+          </div>
+      </div>
+  </div>
+
+{% endblock %}
+
+{#{% block load_js  %}#}
+{#    <script>#}
+{#    // 当失去焦点时检查验证码#}
+{#    function check_captcha() {#}
+{#        var captcha_code = $('#id_captcha').val();#}
+{#        if (captcha_code.length == 0){#}
+{#            return false#}
+{#        }#}
+{#        $.ajax({#}
+{#            url: '{% url 'apis:check_captcha' %}',#}
+{#            type: 'GET',#}
+{#            dataType: 'json',#}
+{#            data: {"captcha_code": captcha_code},#}
+{#            success: function (data) {#}
+{#                if(data.code == 400){#}
+{#                     $('.msg').html("验证码错误");#}
+{#                }else{#}
+{#                    $('.msg').html("");#}
+{#                }#}
+{#            }#}
+{#        });#}
+{#    };#}
+{#    </script>#}
+{#{% endblock %}#}
+

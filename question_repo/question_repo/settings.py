@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_NAME = '题库系统'
+SITE_DESC = '人生苦短，我用Python'
+SITE_KEYWORDS = 'python, django, flask'
 
 # Application definition
 
@@ -37,13 +40,105 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.repo',
+    'apps.repo.apps.RepoConfig',
     'apps.accounts',
     'apps.usercenter',
     'apps.apis',
     # 'apps.forms_base',
+    'ckeditor',
+    'ckeditor_uploader',
+    'easy_thumbnails',
 ]
 
+THUMBNAIL_ALIASES = {
+    '':{
+        'avator': {'size':(50, 50), 'crop':True},
+    }
+}
+
+
+# 注意：在此之前需要配置MEDIA_URL和MEDIA_ROOT
+# 配置媒体文件路径
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+if not os.path.exists(MEDIA_ROOT):
+    os.mkdir(MEDIA_ROOT)
+MEDIA_URL = '/media/'
+# 单位：px
+THUMB_SIZE = 70
+if not os.path.exists(MEDIA_ROOT):
+    os.mkdir(MEDIA_ROOT)
+
+# 修改上传文件大小（Default: 2621440 (i.e. 2.5 MB).）
+DATA_UPLOAD_MAX_MEMORY_SIZE = 2621440*10
+
+# CKEditor配置
+# 真实路径为：MEDIA_URL+CKEDITOR_UPLOAD_PATH(MEDIA_ROOT/CKEDITOR_UPLOAD_PATH)
+CKEDITOR_UPLOAD_PATH = "ckeditor_upload"
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'update': ['Image', 'Update', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak'],
+        'skin': 'moono',
+        # 'skin': 'office2013',
+        'toolbar_Basic': [
+            ['Source', '-', 'Bold', 'Italic']
+        ],
+        'toolbar_YourCustomToolbarConfig': [
+            {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
+            {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
+            {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
+            {'name': 'forms',
+             'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
+                       'HiddenField']},
+            '/',
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+            {'name': 'paragraph',
+             'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
+                       'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
+                       'Language']},
+            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+            {'name': 'insert',
+             'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+            '/',
+            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+            {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
+            {'name': 'about', 'items': ['About']},
+            '/',  # put this to force next toolbar on new line
+            {'name': 'yourcustomtools', 'items': [
+                # put the name of your editor.ui.addButton here
+                'Preview',
+                'Maximize',
+            ]},
+        ],
+        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
+        # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+        # 'height': 291,
+        # 'width': '100%',
+        # 'filebrowserWindowHeight': 725,
+        # 'filebrowserWindowWidth': 940,
+        # 'toolbarCanCollapse': True,
+        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        'tabSpaces': 4,
+        'extraPlugins': ','.join(
+            [
+                # your extra plugins here
+                'div',
+                'autolink',
+                'autoembed',
+                'embedsemantic',
+                'autogrow',
+                # 'devtools',
+                'widget',
+                'lineutils',
+                'clipboard',
+                'dialog',
+                'dialogui',
+                'elementspath'
+            ]),
+    }
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -67,6 +162,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 'question_repo.context_processors.repo_data',
+                'apps.repo.context_processors.repo_data',
+
             ],
         },
     },
@@ -120,7 +218,8 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+# 通过CMD方式插入数据时，因为数据包含日期类型，所以会报： RuntimeWarning: DateTimeField Event.starttime received a naive datetime (2016-09-02 10:20:00) while time zone support is active.的错误。
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -131,6 +230,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(os.path.join(BASE_DIR, "static"))
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'allstatic')
 
 # 配置日志
 LOG_ROOT = os.path.join(BASE_DIR, 'logs')
@@ -258,3 +359,17 @@ CACHES = {
 # NEVER_REDIS_TIMEOUT=365*24*60*60
 
 FontPath = os.path.join(BASE_DIR,"static/fonts/")
+
+
+# 配置发送邮件
+DEFAULT_FROM_EMAIL = '1210972564@qq.com'
+# 163邮箱SMTP服务器地址
+EMAIL_HOST = 'smtp.qq.com'
+# 发件人的邮箱
+EMAIL_HOST_USER = '1210972564@qq.com'
+# 发件人邮箱密码
+EMAIL_HOST_PASSWORD = 'iasaxjxzhbatgfja'
+# tls协议，有True和False两种情况
+EMAIL_USE_TLS = True
+# 发件人的邮箱
+EMAIL_FROM = '1210972564@qq.com'
