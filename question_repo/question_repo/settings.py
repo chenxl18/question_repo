@@ -61,10 +61,10 @@ THUMBNAIL_ALIASES = {
 
 # 注意：在此之前需要配置MEDIA_URL和MEDIA_ROOT
 # 配置媒体文件路径
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, '/allstatic/media')
 if not os.path.exists(MEDIA_ROOT):
     os.mkdir(MEDIA_ROOT)
-MEDIA_URL = '/media/'
+MEDIA_URL = '/allstatic/media/'
 # 单位：px
 THUMB_SIZE = 70
 if not os.path.exists(MEDIA_ROOT):
@@ -247,7 +247,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 # 静态文件的查找路径
-STATIC_URL = '/static/'
+STATIC_URL = '/allstatic/'
 STATICFILES_DIRS = [
     os.path.join(os.path.join(BASE_DIR, "allstatic"))
 ]
@@ -379,7 +379,7 @@ CACHES = {
 # CUBES_REDIS_TIMEOUT=60*60
 # NEVER_REDIS_TIMEOUT=365*24*60*60
 
-FontPath = os.path.join(BASE_DIR,"static/fonts/")
+FontPath = os.path.join(BASE_DIR,"/allstatic/fonts/")
 
 
 # 配置发送邮件
