@@ -249,7 +249,7 @@ USE_TZ = False
 # 静态文件的查找路径
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(os.path.join(BASE_DIR, "static"))
+    os.path.join(os.path.join(BASE_DIR, "allstatic"))
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'allstatic')
